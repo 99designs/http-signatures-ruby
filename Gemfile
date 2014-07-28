@@ -1,4 +1,2 @@
-source 'https://rubygems.org'
-
-# Specify your gem's dependencies in http_signatures.gemspec
+source "https://rubygems.org"
 gemspec
