@@ -7,9 +7,14 @@ RSpec.describe HttpSignatures::Signer do
   subject(:signer) do
     HttpSignatures::Signer.new(key: key, algorithm: algorithm)
   end
-
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
   let(:algorithm) { HttpSignatures::Algorithm::Null.new(key: nil) }
+
+  let(:message) do
+    HttpSignatures::Message.new(
+      header: {"Date" => ["Mon, 28 Jul 2014 15:39:13 -0700"]},
+    )
+  end
 
   let(:signature_structure_pattern) do
     %r{
@@ -22,10 +27,11 @@ RSpec.describe HttpSignatures::Signer do
     }x
   end
 
-  let(:message) do
-    HttpSignatures::Message.new(
-      header: {"Date" => ["Mon, 28 Jul 2014 15:39:13 -0700"]},
-    )
+  describe "#sign" do
+    before { signer.sign(message) }
+    it "does not add signature to passed message" do
+      expect(message.header.key?("Signature")).to eq(false)
+    end
   end
 
   describe "#signed_message" do
@@ -37,9 +43,6 @@ RSpec.describe HttpSignatures::Signer do
       expect(signed_message.header["Signature"][0]).to eq(
         'keyId="pda",algorithm="null",signature="TODO/signature"'
       )
-    end
-    it "does not add signature to passed message" do
-      expect(message.header.key?("Signature")).to eq(false)
     end
   end
 
