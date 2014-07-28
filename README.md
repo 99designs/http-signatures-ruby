@@ -1,29 +1,13 @@
-# HttpSignatures
+# HTTP Signatures
 
-TODO: Write a gem description
+Ruby implementation of [HTTP Signatures][draft03] draft specification.
 
-## Installation
+Cryptographically sign and verify HTTP messages.
 
-Add this line to your application's Gemfile:
-
-    gem 'http_signatures'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install http_signatures
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/http_signatures/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Pull Requests are welcome.
+
+
+[draft03]: http://tools.ietf.org/html/draft-cavage-http-signatures-03
