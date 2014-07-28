@@ -1,5 +1,6 @@
-require "http_signatures/signer"
+require "http_signatures/algorithm/null"
 require "http_signatures/key"
+require "http_signatures/signer"
 
 RSpec.describe HttpSignatures::Signer do
 
@@ -8,7 +9,7 @@ RSpec.describe HttpSignatures::Signer do
   end
 
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
-  let(:algorithm) { double("HttpSignatures::Algorithm", name: "test") }
+  let(:algorithm) { HttpSignatures::Algorithm::Null.new(key: nil) }
 
   let(:signature_structure_pattern) do
     %r{
@@ -34,7 +35,7 @@ RSpec.describe HttpSignatures::Signer do
     end
     it "matches expected signature header" do
       expect(signed_message.header["Signature"][0]).to eq(
-        'keyId="pda",algorithm="test",signature="TODO/signature"'
+        'keyId="pda",algorithm="null",signature="TODO/signature"'
       )
     end
     it "does not add signature to passed message" do
