@@ -8,8 +8,7 @@ module HttpSignatures
       @signature = signature
     end
 
-    # TODO: to_str instead/also?
-    def to_s
+    def to_str
       parameter_components.join(",")
     end
 

@@ -13,7 +13,7 @@ module HttpSignatures
 
     def sign(message)
       message.dup.tap do |m|
-        m.header["Signature"] = [signature_parameters_for_message(message).to_s]
+        m.header["Signature"] = [signature_parameters_for_message(message).to_str]
       end
     end
 
