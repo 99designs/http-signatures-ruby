@@ -9,5 +9,11 @@ module HttpSignatures
     attr_reader :id
     attr_reader :secret
 
+    def ==(other)
+      self.class == other.class &&
+        self.id == other.id &&
+        self.secret == other.secret
+    end
+
   end
 end
