@@ -1,11 +1,12 @@
-require "http_signatures/key"
+require "http_signatures/algorithm"
+require "http_signatures/key_store"
 require "http_signatures/signer"
 
 module HttpSignatures
   class Context
 
     def initialize(keys: {}, algorithm: nil, headers: nil)
-      @key_store = KeyStore.new(keys)
+      @key_store = HttpSignatures::KeyStore.new(keys)
       @algorithm_name = algorithm
       @headers = headers
     end
@@ -16,25 +17,6 @@ module HttpSignatures
         algorithm: HttpSignatures::Algorithm.create(@algorithm_name),
         headers: @headers,
       )
-    end
-
-    class KeyStore
-
-      def initialize(key_hash)
-        @keys = {}
-        key_hash.each { |id, secret| self[id] = secret }
-      end
-
-      def fetch(id)
-        @keys.fetch(id)
-      end
-
-      private
-
-      def []=(id, secret)
-        @keys[id] = HttpSignatures::Key.new(id: id, secret: secret)
-      end
-
     end
 
   end
