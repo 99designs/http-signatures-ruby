@@ -28,4 +28,11 @@ RSpec.describe HttpSignatures::HeaderList do
     end
   end
 
+  describe "#to_s" do
+    it "joins normalized header names with spaces" do
+      list = HttpSignatures::HeaderList.new(["(request-target)", "Date", "Content-Type"])
+      expect(list.to_s).to eq("(request-target) date content-type")
+    end
+  end
+
 end

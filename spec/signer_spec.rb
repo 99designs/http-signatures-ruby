@@ -8,11 +8,11 @@ RSpec.describe HttpSignatures::Signer do
   EXAMPLE_DATE = "Mon, 28 Jul 2014 15:39:13 -0700"
 
   subject(:signer) do
-    HttpSignatures::Signer.new(key: key, algorithm: algorithm, header_names: headers_to_sign)
+    HttpSignatures::Signer.new(key: key, algorithm: algorithm, header_list: header_list)
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
   let(:algorithm) { HttpSignatures::Algorithm::Null.new }
-  let(:headers_to_sign) { ["date", "content-type"] }
+  let(:header_list) { HttpSignatures::HeaderList.new(["date", "content-type"]) }
 
   let(:message) do
     Net::HTTP::Get.new(
