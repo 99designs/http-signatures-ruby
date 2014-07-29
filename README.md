@@ -10,30 +10,45 @@ Configure a context with your algorithm, keys, headers to sign. In Rails,
 this is best placed in an initializer.
 
 ```rb
+require "http_signatures"
+
 $context = HttpSignatures::Context.new(
   keys: {"examplekey" => "secret-key-here"},
   algorithm: "hmac-sha256",
-  headers: %w{(request-target) date content-length},
+  headers: %w{(request-target) Date Content-Length},
+)
+```
+
+### Messages
+
+A message is an HTTP request or response. A subset of the interface of
+Ruby's Net::HTTPRequest and Net::HTTPResponse is expected; the ability to
+set/read headers via `message["name"]`, and for requests, the presence
+of `message#method` and `message#path` for `(request-target)` support.
+
+```rb
+require "net/http"
+require "time"
+message = Net::HTTP::Get.new(
+  "/path?query=123",
+  "Date" => Time.now.rfc822,
+  "Content-Length" => "0",
 )
 ```
 
 ### Signing a message
 
-`message` is an `HttpSignatures::Message` instance, representing an HTTP
-request or response. Adapters for Ruby's `Net::HTTP` and other HTTP clients
-will be forthcoming.
-
 ```rb
-signed_message = $context.signer("examplekey").sign(message)
+$context.signer("examplekey").sign(message)
 ```
 
-Now `signed_message` contains the signature headers:
+Now `message` contains the signature headers:
 
 ```rb
-signed_message.header["Signature"]
+message["Signature"]
 # keyId="examplekey",algorithm="hmac-sha256",headers="...",signature="..."
 
-signed_message.header["Authorization"]
+message["Authorization"]
 # Signature keyId="examplekey",algorithm="hmac-sha256",headers="...",signature="..."
 ```
 
