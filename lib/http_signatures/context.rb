@@ -6,14 +6,14 @@ module HttpSignatures
 
     def initialize(keys: {}, algorithm: nil, headers: nil)
       @key_store = KeyStore.new(keys)
-      @algorithm = algorithm
+      @algorithm_name = algorithm
       @headers = headers
     end
 
     def signer(key_id)
       HttpSignatures::Signer.new(
         key: @key_store.fetch(key_id),
-        algorithm: @algorithm,
+        algorithm: HttpSignatures::Algorithm.create(@algorithm_name),
         headers: @headers,
       )
     end
