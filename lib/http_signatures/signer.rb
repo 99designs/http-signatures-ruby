@@ -20,12 +20,11 @@ module HttpSignatures
     private
 
     def signature_parameters_for_message(message)
-      signature = signature_for_message(message)
       SignatureParameters.new(
         key_id: @key.id,
         algorithm_name: @algorithm.name,
         header_names: @header_names,
-        signature: signature,
+        signature: signature_for_message(message),
       )
     end
 
@@ -39,8 +38,7 @@ module HttpSignatures
       end.join("\n")
     end
 
-    class EmptyHeaderNames < StandardError
-    end
+    class EmptyHeaderNames < StandardError; end
 
   end
 end

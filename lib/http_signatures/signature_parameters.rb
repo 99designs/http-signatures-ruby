@@ -18,9 +18,13 @@ module HttpSignatures
       pc = []
       pc << 'keyId="%s"' % @key_id
       pc << 'algorithm="%s"' % @algorithm_name
-      pc << 'headers="%s"' % @header_names.join(" ")
+      pc << 'headers="%s"' % header_name_list
       pc << 'signature="%s"' % @signature
       pc
+    end
+
+    def header_name_list
+      @header_names.join(" ")
     end
 
   end

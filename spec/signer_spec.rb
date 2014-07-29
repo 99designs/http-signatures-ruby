@@ -10,7 +10,7 @@ RSpec.describe HttpSignatures::Signer do
     HttpSignatures::Signer.new(key: key, algorithm: algorithm, header_names: headers_to_sign)
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
-  let(:algorithm) { HttpSignatures::Algorithm::Null.new(key: nil) }
+  let(:algorithm) { HttpSignatures::Algorithm::Null.new }
   let(:headers_to_sign) { ["(request-target)", "date", "content-type"] }
 
   let(:message) do
@@ -41,12 +41,11 @@ RSpec.describe HttpSignatures::Signer do
       expect(message.header.key?("Signature")).to eq(false)
     end
     it "passes correct signing string to algorithm" do
-      signing_string = [
+      expect(algorithm).to receive(:sign).with([
         "(request-target): get /path?query=123",
         "date: #{EXAMPLE_DATE}",
         "content-type: text/plain",
-      ].join("\n")
-      expect(algorithm).to receive(:sign).with(signing_string)
+      ].join("\n"))
       signer.sign(message)
     end
   end
