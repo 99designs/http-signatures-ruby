@@ -10,6 +10,14 @@ module HttpSignatures
       @keys.fetch(id)
     end
 
+    def only_key
+      if @keys.one?
+        @keys.values.first
+      else
+        raise KeyError, "Expected 1 key, found #{@keys.size}"
+      end
+    end
+
     private
 
     def []=(id, secret)

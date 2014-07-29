@@ -15,9 +15,12 @@ require "http_signatures"
 $context = HttpSignatures::Context.new(
   keys: {"examplekey" => "secret-key-here"},
   algorithm: "hmac-sha256",
-  headers: %w{(request-target) Date Content-Length},
+  headers: ["(request-target)", "Date", "Content-Length"],
 )
 ```
+
+If there's only one key in the `keys` hash, that will be used for signing.
+Otherwise, specify one via `signing_key_id: "examplekey"`.
 
 ### Messages
 
@@ -29,6 +32,7 @@ of `message#method` and `message#path` for `(request-target)` support.
 ```rb
 require "net/http"
 require "time"
+
 message = Net::HTTP::Get.new(
   "/path?query=123",
   "Date" => Time.now.rfc822,
@@ -39,7 +43,7 @@ message = Net::HTTP::Get.new(
 ### Signing a message
 
 ```rb
-$context.signer("examplekey").sign(message)
+$context.signer.sign(message)
 ```
 
 Now `message` contains the signature headers:
