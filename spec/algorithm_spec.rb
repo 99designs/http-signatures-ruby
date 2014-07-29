@@ -8,6 +8,8 @@ RSpec.describe HttpSignatures::Algorithm do
 
   {
     "null" => "bnVsbA==", # "null"
+    "hmac-sha1" => "bXPeVc5ySIyeUapN7mpMsJRnxVg=",
+    "hmac-sha256" => "hRQ5zpbGudR1hokS4PqeAkveKmz2dd8SCgV8OHcramI=",
   }.each do |name, base64_signature|
 
     describe name do
