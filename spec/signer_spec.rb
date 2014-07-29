@@ -11,11 +11,12 @@ RSpec.describe HttpSignatures::Signer do
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
   let(:algorithm) { HttpSignatures::Algorithm::Null.new(key: nil) }
-  let(:headers_to_sign) { ["date", "content-type"] }
+  let(:headers_to_sign) { ["(request-target)", "date", "content-type"] }
 
   let(:message) do
     HttpSignatures::Message.new(
       header: {
+        "(request-target)" => ["get /path?query=123"],
         "Date" => [EXAMPLE_DATE],
         "Content-Type" => ["text/plain"],
         "Content-Length" => ["123"],
@@ -40,7 +41,11 @@ RSpec.describe HttpSignatures::Signer do
       expect(message.header.key?("Signature")).to eq(false)
     end
     it "passes correct signing string to algorithm" do
-      signing_string = "date: #{EXAMPLE_DATE}\ncontent-type: text/plain"
+      signing_string = [
+        "(request-target): get /path?query=123",
+        "date: #{EXAMPLE_DATE}",
+        "content-type: text/plain",
+      ].join("\n")
       expect(algorithm).to receive(:sign).with(signing_string)
       signer.sign(message)
     end
@@ -53,11 +58,9 @@ RSpec.describe HttpSignatures::Signer do
     end
     it "matches expected signature header" do
       expect(signed_message.header["Signature"][0]).to eq(
-        'keyId="pda",algorithm="null",headers="date content-type",signature="null"'
+        'keyId="pda",algorithm="null",headers="(request-target) date content-type",signature="null"'
       )
     end
   end
-
-  it "handles (request-target) pseudo headers"
 
 end
