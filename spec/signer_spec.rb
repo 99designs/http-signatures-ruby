@@ -45,7 +45,7 @@ RSpec.describe HttpSignatures::Signer do
         "(request-target): get /path?query=123",
         "date: #{EXAMPLE_DATE}",
         "content-type: text/plain",
-      ].join("\n"))
+      ].join("\n")).and_return("null")
       signer.sign(message)
     end
   end
@@ -57,7 +57,7 @@ RSpec.describe HttpSignatures::Signer do
     end
     it "matches expected signature header" do
       expect(signed_message.header["Signature"][0]).to eq(
-        'keyId="pda",algorithm="null",headers="(request-target) date content-type",signature="null"'
+        'keyId="pda",algorithm="null",headers="(request-target) date content-type",signature="bnVsbA=="'
       )
     end
   end

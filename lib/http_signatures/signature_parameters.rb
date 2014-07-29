@@ -1,3 +1,5 @@
+require "base64"
+
 module HttpSignatures
   class SignatureParameters
 
@@ -19,12 +21,16 @@ module HttpSignatures
       pc << 'keyId="%s"' % @key_id
       pc << 'algorithm="%s"' % @algorithm_name
       pc << 'headers="%s"' % header_name_list
-      pc << 'signature="%s"' % @signature
+      pc << 'signature="%s"' % signature_base64
       pc
     end
 
     def header_name_list
       @header_names.join(" ")
+    end
+
+    def signature_base64
+      Base64.strict_encode64(@signature)
     end
 
   end
