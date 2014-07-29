@@ -7,11 +7,11 @@ RSpec.describe HttpSignatures::Signer do
   EXAMPLE_DATE = "Mon, 28 Jul 2014 15:39:13 -0700"
 
   subject(:signer) do
-    HttpSignatures::Signer.new(key: key, algorithm: algorithm, headers: headers_to_sign)
+    HttpSignatures::Signer.new(key: key, algorithm: algorithm, header_names: headers_to_sign)
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
   let(:algorithm) { HttpSignatures::Algorithm::Null.new(key: nil) }
-  let(:headers_to_sign) { nil }
+  let(:headers_to_sign) { ["date", "content-type"] }
 
   let(:message) do
     HttpSignatures::Message.new(
@@ -39,20 +39,10 @@ RSpec.describe HttpSignatures::Signer do
       signer.sign(message)
       expect(message.header.key?("Signature")).to eq(false)
     end
-    context "without specifying headers to sign" do
-      it "passes correct signing string (containing date) to algorithm" do
-        signing_string = "date: #{EXAMPLE_DATE}"
-        expect(algorithm).to receive(:sign).with(signing_string)
-        signer.sign(message)
-      end
-    end
-    context "with several headers specified" do
-      let(:headers_to_sign) { ["date", "content-type"] }
-      it "passes correct signing string to algorithm" do
-        signing_string = "date: #{EXAMPLE_DATE}\ncontent-type: text/plain"
-        expect(algorithm).to receive(:sign).with(signing_string)
-        signer.sign(message)
-      end
+    it "passes correct signing string to algorithm" do
+      signing_string = "date: #{EXAMPLE_DATE}\ncontent-type: text/plain"
+      expect(algorithm).to receive(:sign).with(signing_string)
+      signer.sign(message)
     end
   end
 
@@ -63,9 +53,11 @@ RSpec.describe HttpSignatures::Signer do
     end
     it "matches expected signature header" do
       expect(signed_message.header["Signature"][0]).to eq(
-        'keyId="pda",algorithm="null",signature="null"'
+        'keyId="pda",algorithm="null",headers="date content-type",signature="null"'
       )
     end
   end
+
+  it "handles (request-target) pseudo headers"
 
 end

@@ -4,12 +4,11 @@ require "http_signatures/signature_parameters"
 module HttpSignatures
   class Signer
 
-    DEFAULT_HEADERS = ["date"]
-
-    def initialize(key:, algorithm:, headers: nil)
+    def initialize(key:, algorithm:, header_names:)
+      raise(EmptyHeaderNames) if header_names.empty?
       @key = key
       @algorithm = algorithm
-      @headers = headers
+      @header_names = header_names
     end
 
     def sign(message)
@@ -35,13 +34,12 @@ module HttpSignatures
     end
 
     def signing_string_for_message(message)
-      specified_or_default_header_names.map do |name|
+      @header_names.map do |name|
         "%s: %s" % [name, message.header[name].join("")]
       end.join("\n")
     end
 
-    def specified_or_default_header_names
-      @headers || DEFAULT_HEADERS
+    class EmptyHeaderNames < StandardError
     end
 
   end

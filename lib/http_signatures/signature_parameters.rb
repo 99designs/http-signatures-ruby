@@ -10,14 +10,19 @@ module HttpSignatures
 
     # TODO: to_str instead/also?
     def to_s
-      'keyId="%s",algorithm="%s",signature="%s"' % [
-        @key_id,
-        @algorithm_name,
-        @signature,
-      ]
+      parameter_components.join(",")
     end
 
     private
+
+    def parameter_components
+      pc = []
+      pc << 'keyId="%s"' % @key_id
+      pc << 'algorithm="%s"' % @algorithm_name
+      pc << 'headers="%s"' % @header_names.join(" ")
+      pc << 'signature="%s"' % @signature
+      pc
+    end
 
   end
 end
