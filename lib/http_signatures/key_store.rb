@@ -15,7 +15,7 @@ module HttpSignatures
     private
 
     def []=(id, secret)
-      @keys[id] = HttpSignatures::Key.new(id: id, secret: secret)
+      @keys[id] = Key.new(id: id, secret: secret)
     end
 
   end

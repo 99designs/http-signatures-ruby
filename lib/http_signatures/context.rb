@@ -7,16 +7,16 @@ module HttpSignatures
   class Context
 
     def initialize(keys: {}, algorithm: nil, headers: nil)
-      @key_store = HttpSignatures::KeyStore.new(keys)
+      @key_store = KeyStore.new(keys)
       @algorithm_name = algorithm
       @headers = headers
     end
 
     def signer(key_id)
-      HttpSignatures::Signer.new(
+      Signer.new(
         key: @key_store.fetch(key_id),
-        algorithm: HttpSignatures::Algorithm.create(@algorithm_name),
-        header_list: HttpSignatures::HeaderList.new(@headers),
+        algorithm: Algorithm.create(@algorithm_name),
+        header_list: HeaderList.new(@headers),
       )
     end
 

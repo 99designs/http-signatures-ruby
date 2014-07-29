@@ -36,7 +36,7 @@ module HttpSignatures
     end
 
     def signing_string_for_message(message)
-      HttpSignatures::SigningString.new(
+      SigningString.new(
         header_list: @header_list,
         message: message,
       ).to_s
