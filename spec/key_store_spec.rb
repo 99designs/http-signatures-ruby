@@ -1,5 +1,3 @@
-require "http_signatures/key_store"
-
 RSpec.describe HttpSignatures::KeyStore do
 
   subject(:store) do

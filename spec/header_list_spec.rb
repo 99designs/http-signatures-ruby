@@ -1,5 +1,3 @@
-require "http_signatures/header_list"
-
 RSpec.describe HttpSignatures::HeaderList do
 
   describe ".from_string" do

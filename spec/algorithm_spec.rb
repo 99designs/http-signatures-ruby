@@ -1,5 +1,4 @@
 require "base64"
-require "http_signatures/algorithm"
 
 RSpec.describe HttpSignatures::Algorithm do
 

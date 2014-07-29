@@ -1,5 +1,3 @@
-require "http_signatures/header_list"
-require "http_signatures/signing_string"
 require "net/http"
 
 RSpec.describe HttpSignatures::SigningString do

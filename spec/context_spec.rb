@@ -1,6 +1,3 @@
-require "http_signatures/algorithm/null"
-require "http_signatures/context"
-require "http_signatures/signer"
 require "net/http"
 
 RSpec.describe HttpSignatures::Context do

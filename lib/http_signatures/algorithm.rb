@@ -1,6 +1,3 @@
-require "http_signatures/algorithm/null"
-require "http_signatures/algorithm/hmac"
-
 module HttpSignatures
   module Algorithm
 

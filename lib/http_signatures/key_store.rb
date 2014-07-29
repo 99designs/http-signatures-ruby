@@ -1,5 +1,3 @@
-require "http_signatures/key"
-
 module HttpSignatures
   class KeyStore
 

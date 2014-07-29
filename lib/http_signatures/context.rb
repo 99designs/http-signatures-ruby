@@ -1,8 +1,3 @@
-require "http_signatures/algorithm"
-require "http_signatures/header_list"
-require "http_signatures/key_store"
-require "http_signatures/signer"
-
 module HttpSignatures
   class Context
 

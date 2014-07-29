@@ -1,6 +1,3 @@
-require "http_signatures/signature_parameters"
-require "http_signatures/signing_string"
-
 module HttpSignatures
   class Signer
 
