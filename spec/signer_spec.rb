@@ -49,11 +49,6 @@ RSpec.describe HttpSignatures::Signer do
   end
 
   describe "#sign" do
-    it "does not add signature to passed message" do
-      signer.sign(message)
-      expect(message.header.key?("Authorization")).to eq(false)
-      expect(message.header.key?("Signature")).to eq(false)
-    end
     it "passes correct signing string to algorithm" do
       expect(algorithm).to receive(:sign).with(
         "sh",
@@ -64,6 +59,9 @@ RSpec.describe HttpSignatures::Signer do
         ].join("\n")
       ).and_return("null")
       signer.sign(message)
+    end
+    it "returns reference to the mutated input" do
+      expect(signer.sign(message)).to eq(message)
     end
   end
 

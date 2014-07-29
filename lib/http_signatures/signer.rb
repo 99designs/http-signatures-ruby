@@ -14,7 +14,7 @@ module HttpSignatures
     end
 
     def sign(message)
-      message.dup.tap do |m|
+      message.tap do |m|
         signature = signature_parameters_for_message(message).to_str
         m.header["Signature"] = [signature]
         m.header["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature]
