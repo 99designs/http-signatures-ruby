@@ -15,7 +15,7 @@ module HttpSignatures
       HttpSignatures::Signer.new(
         key: @key_store.fetch(key_id),
         algorithm: HttpSignatures::Algorithm.create(@algorithm_name),
-        headers: @headers,
+        header_names: @headers,
       )
     end
 

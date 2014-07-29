@@ -17,7 +17,7 @@ RSpec.describe HttpSignatures::Context do
       expect(HttpSignatures::Signer).to receive(:new) do |args|
         expect(args[:key]).to eq(HttpSignatures::Key.new(id: "hello", secret: "world"))
         expect(args[:algorithm].name).to eq("null")
-        expect(args[:headers]).to eq(%w{(request-target) date content-length})
+        expect(args[:header_names]).to eq(%w{(request-target) date content-length})
       end
       context.signer("hello")
     end
