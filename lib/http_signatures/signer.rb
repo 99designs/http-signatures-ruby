@@ -1,4 +1,3 @@
-require "http_signatures/message"
 require "http_signatures/signature_parameters"
 
 module HttpSignatures
@@ -16,8 +15,8 @@ module HttpSignatures
     def sign(message)
       message.tap do |m|
         signature = signature_parameters_for_message(message).to_str
-        m.header["Signature"] = [signature]
-        m.header["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature]
+        m["Signature"] = [signature]
+        m["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature]
       end
     end
 
@@ -38,11 +37,19 @@ module HttpSignatures
 
     def signing_string_for_message(message)
       @header_names.map do |name|
-        "%s: %s" % [name, message.header[name].join("")]
+        values = message.get_fields(name)
+        raise(MessageMissingHeader.new(name)) unless values
+        "%s: %s" % [name, values.join("")]
       end.join("\n")
     end
 
     class EmptyHeaderNames < StandardError; end
+
+    class MessageMissingHeader < StandardError
+      def initialize(name)
+        super("Message missing header '#{name}'")
+      end
+    end
 
   end
 end

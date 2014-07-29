@@ -1,6 +1,7 @@
 require "http_signatures/algorithm/null"
 require "http_signatures/key"
 require "http_signatures/signer"
+require "net/http"
 
 RSpec.describe HttpSignatures::Signer do
 
@@ -11,16 +12,14 @@ RSpec.describe HttpSignatures::Signer do
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
   let(:algorithm) { HttpSignatures::Algorithm::Null.new }
-  let(:headers_to_sign) { ["(request-target)", "date", "content-type"] }
+  let(:headers_to_sign) { ["date", "content-type"] }
 
   let(:message) do
-    HttpSignatures::Message.new(
-      header: {
-        "(request-target)" => ["get /path?query=123"],
-        "Date" => [EXAMPLE_DATE],
-        "Content-Type" => ["text/plain"],
-        "Content-Length" => ["123"],
-      },
+    Net::HTTP::Get.new(
+      "/path?query=123",
+      "Date" => EXAMPLE_DATE,
+      "Content-Type" => "text/plain",
+      "Content-Length" => "123",
     )
   end
 
@@ -53,7 +52,6 @@ RSpec.describe HttpSignatures::Signer do
       expect(algorithm).to receive(:sign).with(
         "sh",
         [
-          "(request-target): get /path?query=123",
           "date: #{EXAMPLE_DATE}",
           "content-type: text/plain",
         ].join("\n")
@@ -65,24 +63,24 @@ RSpec.describe HttpSignatures::Signer do
     end
   end
 
-  describe "#signed_message" do
-    let(:signed_message) { signer.sign(message) }
+  context "after signing" do
+    before { signer.sign(message) }
     it "has valid Authorization header structure" do
-      expect(signed_message.header["Authorization"][0]).to match(authorization_structure_pattern)
+      expect(message["Authorization"]).to match(authorization_structure_pattern)
     end
     it "has valid Signature header structure" do
-      expect(signed_message.header["Signature"][0]).to match(signature_structure_pattern)
+      expect(message["Signature"]).to match(signature_structure_pattern)
     end
     it "matches expected Authorization header" do
-      expect(signed_message.header["Authorization"][0]).to eq(
+      expect(message["Authorization"]).to eq(
         'Signature keyId="pda",algorithm="null",' +
-          'headers="(request-target) date content-type",signature="bnVsbA=="'
+          'headers="date content-type",signature="bnVsbA=="'
       )
     end
     it "matches expected Signature header" do
-      expect(signed_message.header["Signature"][0]).to eq(
+      expect(message["Signature"]).to eq(
         'keyId="pda",algorithm="null",' +
-          'headers="(request-target) date content-type",signature="bnVsbA=="'
+          'headers="date content-type",signature="bnVsbA=="'
       )
     end
   end
