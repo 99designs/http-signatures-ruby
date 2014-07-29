@@ -1,8 +1,7 @@
 # HTTP Signatures
 
-Ruby implementation of [HTTP Signatures][draft03] draft specification.
-
-Cryptographically sign and verify HTTP messages.
+Ruby implementation of [HTTP Signatures][draft03] draft specification;
+cryptographically sign and verify HTTP requests and responses.
 
 
 ## Usage
@@ -12,29 +11,42 @@ this is best placed in an initializer.
 
 ```rb
 $context = HttpSignatures::Context.new(
-  keys: {"keyname" => "secret-key-here"},
+  keys: {"examplekey" => "secret-key-here"},
   algorithm: "hmac-sha256",
   headers: %w{(request-target) date content-length},
 )
 ```
 
-Sign a message. `message` is an `HttpSignatures::Message` instance,
-representing an HTTP request or response. Adapters for Ruby's `Net::HTTP` and
-other HTTP clients will be forthcoming.
+### Signing a message
+
+`message` is an `HttpSignatures::Message` instance, representing an HTTP
+request or response. Adapters for Ruby's `Net::HTTP` and other HTTP clients
+will be forthcoming.
 
 ```rb
-signed_message = $context.signer("keyname").sign(message)
+signed_message = $context.signer("examplekey").sign(message)
 ```
 
 Now `signed_message` contains the signature headers:
 
 ```rb
 signed_message.header["Signature"]
-# => keyId="keyname",algorithm="hmac-sha256",headers="...",signature="..."
+# keyId="examplekey",algorithm="hmac-sha256",headers="...",signature="..."
 
 signed_message.header["Authorization"]
-# => Signature keyId="keyname",algorithm="hmac-sha256",headers="...",signature="..."
+# Signature keyId="examplekey",algorithm="hmac-sha256",headers="...",signature="..."
 ```
+
+### Verifying a signed message
+
+Message verification is not implemented, but will look like this:
+
+* The key ID, algorithm name, header list and provided signature will be parsed
+  from the `Signature` and/or `Authorization` header.
+* The signing string will be derived by selecting the listed headers from the
+  message.
+* The valid signature will be derived by applying the algorithm and secret key.
+* The message is valid if the provided signature matches the valid signature.
 
 
 ## Contributing
