@@ -4,6 +4,8 @@ require "http_signatures/signature_parameters"
 module HttpSignatures
   class Signer
 
+    AUTHORIZATION_SCHEME = "Signature"
+
     def initialize(key:, algorithm:, header_names:)
       raise(EmptyHeaderNames) if header_names.empty?
       @key = key
@@ -13,7 +15,9 @@ module HttpSignatures
 
     def sign(message)
       message.dup.tap do |m|
-        m.header["Signature"] = [signature_parameters_for_message(message).to_str]
+        signature = signature_parameters_for_message(message).to_str
+        m.header["Signature"] = [signature]
+        m.header["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature]
       end
     end
 

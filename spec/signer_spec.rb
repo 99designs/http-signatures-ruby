@@ -24,6 +24,19 @@ RSpec.describe HttpSignatures::Signer do
     )
   end
 
+  let(:authorization_structure_pattern) do
+    %r{
+      \A
+      Signature
+      \s
+      keyId="[\w-]+",
+      algorithm="[\w-]+",
+      (?:headers=".*",)?
+      signature="[a-zA-Z0-9/+=]+"
+      \z
+    }x
+  end
+
   let(:signature_structure_pattern) do
     %r{
       \A
@@ -38,6 +51,7 @@ RSpec.describe HttpSignatures::Signer do
   describe "#sign" do
     it "does not add signature to passed message" do
       signer.sign(message)
+      expect(message.header.key?("Authorization")).to eq(false)
       expect(message.header.key?("Signature")).to eq(false)
     end
     it "passes correct signing string to algorithm" do
@@ -55,12 +69,22 @@ RSpec.describe HttpSignatures::Signer do
 
   describe "#signed_message" do
     let(:signed_message) { signer.sign(message) }
-    it "has valid signature structure" do
+    it "has valid Authorization header structure" do
+      expect(signed_message.header["Authorization"][0]).to match(authorization_structure_pattern)
+    end
+    it "has valid Signature header structure" do
       expect(signed_message.header["Signature"][0]).to match(signature_structure_pattern)
     end
-    it "matches expected signature header" do
+    it "matches expected Authorization header" do
+      expect(signed_message.header["Authorization"][0]).to eq(
+        'Signature keyId="pda",algorithm="null",' +
+          'headers="(request-target) date content-type",signature="bnVsbA=="'
+      )
+    end
+    it "matches expected Signature header" do
       expect(signed_message.header["Signature"][0]).to eq(
-        'keyId="pda",algorithm="null",headers="(request-target) date content-type",signature="bnVsbA=="'
+        'keyId="pda",algorithm="null",' +
+          'headers="(request-target) date content-type",signature="bnVsbA=="'
       )
     end
   end

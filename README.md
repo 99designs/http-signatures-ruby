@@ -24,13 +24,16 @@ other HTTP clients will be forthcoming.
 
 ```rb
 signed_message = $context.signer("keyname").sign(message)
-
 ```
 
-Now `signed_message.header["Signature"]` contains the signature parameters:
+Now `signed_message` contains the signature headers:
 
-```
-Signature: keyId="keyname",algorithm="hmac-sha256",headers="...",signature="..."
+```rb
+signed_message.header["Signature"]
+# => keyId="keyname",algorithm="hmac-sha256",headers="...",signature="..."
+
+signed_message.header["Authorization"]
+# => Signature keyId="keyname",algorithm="hmac-sha256",headers="...",signature="..."
 ```
 
 
