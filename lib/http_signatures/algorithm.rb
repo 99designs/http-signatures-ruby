@@ -4,11 +4,11 @@ require "http_signatures/algorithm/hmac"
 module HttpSignatures
   module Algorithm
 
-    def self.create(name:, key:)
+    def self.create(name)
       case name
       when "null" then Null.new
-      when "hmac-sha1" then Hmac.new("sha1", key)
-      when "hmac-sha256" then Hmac.new("sha256", key)
+      when "hmac-sha1" then Hmac.new("sha1")
+      when "hmac-sha256" then Hmac.new("sha256")
       else raise UnknownAlgorithm.new(name)
       end
     end

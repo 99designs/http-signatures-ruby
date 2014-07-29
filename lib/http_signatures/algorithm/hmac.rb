@@ -4,13 +4,12 @@ module HttpSignatures
   module Algorithm
     class Hmac
 
-      def initialize(digest_name, key)
+      def initialize(digest_name)
         @digest = OpenSSL::Digest.new(digest_name)
-        @key = key
       end
 
-      def sign(data)
-        OpenSSL::HMAC.digest(@digest, @key, data)
+      def sign(key, data)
+        OpenSSL::HMAC.digest(@digest, key, data)
       end
 
     end

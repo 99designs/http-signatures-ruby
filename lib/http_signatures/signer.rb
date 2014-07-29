@@ -29,7 +29,7 @@ module HttpSignatures
     end
 
     def signature_for_message(message)
-      @algorithm.sign(signing_string_for_message(message))
+      @algorithm.sign(@key.secret, signing_string_for_message(message))
     end
 
     def signing_string_for_message(message)

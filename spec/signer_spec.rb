@@ -41,11 +41,14 @@ RSpec.describe HttpSignatures::Signer do
       expect(message.header.key?("Signature")).to eq(false)
     end
     it "passes correct signing string to algorithm" do
-      expect(algorithm).to receive(:sign).with([
-        "(request-target): get /path?query=123",
-        "date: #{EXAMPLE_DATE}",
-        "content-type: text/plain",
-      ].join("\n")).and_return("null")
+      expect(algorithm).to receive(:sign).with(
+        "sh",
+        [
+          "(request-target): get /path?query=123",
+          "date: #{EXAMPLE_DATE}",
+          "content-type: text/plain",
+        ].join("\n")
+      ).and_return("null")
       signer.sign(message)
     end
   end

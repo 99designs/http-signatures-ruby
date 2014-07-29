@@ -14,8 +14,8 @@ RSpec.describe HttpSignatures::Algorithm do
 
     describe name do
       it "produces known-good signature" do
-        algorithm = HttpSignatures::Algorithm.create(name: name, key: key)
-        signature = algorithm.sign(input)
+        algorithm = HttpSignatures::Algorithm.create(name)
+        signature = algorithm.sign(key, input)
         expect(signature).to eq(Base64.strict_decode64(base64_signature))
       end
     end

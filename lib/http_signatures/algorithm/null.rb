@@ -6,7 +6,7 @@ module HttpSignatures
         "null"
       end
 
-      def sign(string)
+      def sign(key, data)
         "null"
       end
 
