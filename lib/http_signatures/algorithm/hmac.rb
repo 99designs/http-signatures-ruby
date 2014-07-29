@@ -5,7 +5,12 @@ module HttpSignatures
     class Hmac
 
       def initialize(digest_name)
+        @digest_name = digest_name
         @digest = OpenSSL::Digest.new(digest_name)
+      end
+
+      def name
+        "hmac-#{@digest_name}"
       end
 
       def sign(key, data)

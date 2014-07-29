@@ -12,9 +12,12 @@ RSpec.describe HttpSignatures::Algorithm do
     "hmac-sha256" => "hRQ5zpbGudR1hokS4PqeAkveKmz2dd8SCgV8OHcramI=",
   }.each do |name, base64_signature|
 
-    describe name do
+    describe ".create('#{name}')" do
+      let(:algorithm) { HttpSignatures::Algorithm.create(name) }
+      it "has #name == '#{name}'" do
+        expect(algorithm.name).to eq(name)
+      end
       it "produces known-good signature" do
-        algorithm = HttpSignatures::Algorithm.create(name)
         signature = algorithm.sign(key, input)
         expect(signature).to eq(Base64.strict_decode64(base64_signature))
       end
