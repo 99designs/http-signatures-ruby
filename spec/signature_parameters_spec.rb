@@ -14,10 +14,12 @@ RSpec.describe HttpSignatures::SignatureParameters do
   let(:header_list) { double("HeaderList", to_str: "a b c") }
   let(:signature) { "sigstring" }
 
-  it "builds parameters into string" do
-    expect(signature_parameters.to_str).to eq(
-      'keyId="pda",algorithm="hmac-test",headers="a b c",signature="c2lnc3RyaW5n"'
-    )
+  describe "#to_str" do
+    it "builds parameters into string" do
+      expect(signature_parameters.to_str).to eq(
+        'keyId="pda",algorithm="hmac-test",headers="a b c",signature="c2lnc3RyaW5n"'
+      )
+    end
   end
 
 end
