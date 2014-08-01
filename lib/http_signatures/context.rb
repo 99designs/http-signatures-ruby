@@ -16,6 +16,10 @@ module HttpSignatures
       )
     end
 
+    def verifier
+      Verifier.new(key_store: @key_store)
+    end
+
     private
 
     def signing_key

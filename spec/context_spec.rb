@@ -24,7 +24,13 @@ RSpec.describe HttpSignatures::Context do
       end
 
       it "signs without errors" do
-        context.signer.sign(message)
+        expect { context.signer.sign(message) }.to_not raise_error
+      end
+
+      it "verifies without errors" do
+        signature_parameters = 'keyId="hello",algorithm="hmac-sha1",headers="date",signature="x"'
+        message = Net::HTTP::Get.new("/", "Date" => "x", "Signature" => signature_parameters)
+        expect { context.verifier.valid?(message) }.to_not raise_error
       end
     end
   end

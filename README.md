@@ -3,6 +3,10 @@
 Ruby implementation of [HTTP Signatures][draft03] draft specification;
 cryptographically sign and verify HTTP requests and responses.
 
+See also:
+
+* https://github.com/99designs/http-signatures-php
+
 
 ## Usage
 
@@ -58,14 +62,9 @@ message["Authorization"]
 
 ### Verifying a signed message
 
-Message verification is not implemented, but will look like this:
-
-* The key ID, algorithm name, header list and provided signature will be parsed
-  from the `Signature` and/or `Authorization` header.
-* The signing string will be derived by selecting the listed headers from the
-  message.
-* The valid signature will be derived by applying the algorithm and secret key.
-* The message is valid if the provided signature matches the valid signature.
+```rb
+$context.verifier.valid?(message)  # => true or false
+```
 
 
 ## Contributing
