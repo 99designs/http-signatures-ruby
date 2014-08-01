@@ -36,7 +36,7 @@ module HttpSignatures
       SigningString.new(
         header_list: @header_list,
         message: message,
-      ).to_s
+      ).to_str
     end
 
     class EmptyHeaderNames < StandardError; end

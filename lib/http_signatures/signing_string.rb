@@ -8,7 +8,7 @@ module HttpSignatures
       @message = message
     end
 
-    def to_s
+    def to_str
       @header_list.to_a.map do |header|
         "%s: %s" % [header, header_value(header)]
       end.join("\n")

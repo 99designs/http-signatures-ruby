@@ -19,10 +19,10 @@ RSpec.describe HttpSignatures::SigningString do
     Net::HTTP::Get.new("/path?query=123", "date" => DATE, "x-herring" => "red")
   end
 
-  describe "#to_s" do
+  describe "#to_str" do
 
     it "returns correct signing string" do
-      expect(signing_string.to_s).to eq(
+      expect(signing_string.to_str).to eq(
         "(request-target): get /path?query=123\n" +
         "date: #{DATE}"
       )
@@ -32,7 +32,7 @@ RSpec.describe HttpSignatures::SigningString do
       let(:header_list) { HttpSignatures::HeaderList.from_string("nope") }
       it "raises HeaderNotInMessage" do
         expect {
-          signing_string.to_s
+          signing_string.to_str
         }.to raise_error(HttpSignatures::HeaderNotInMessage)
       end
     end
