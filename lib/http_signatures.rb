@@ -10,6 +10,8 @@ require "http_signatures/signature_parameters"
 require "http_signatures/signature_parameters_parser"
 require "http_signatures/signer"
 require "http_signatures/signing_string"
+require "http_signatures/verification"
+require "http_signatures/verifier"
 require "http_signatures/version"
 
 module HttpSignatures
