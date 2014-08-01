@@ -23,19 +23,17 @@ module HttpSignatures
         key: @key,
         algorithm: @algorithm,
         header_list: @header_list,
-        signature: signature_for_message(message),
+        signature: signature(message).to_str,
       )
     end
 
-    def signature_for_message(message)
-      @algorithm.sign(@key.secret, signing_string_for_message(message))
-    end
-
-    def signing_string_for_message(message)
-      SigningString.new(
-        header_list: @header_list,
+    def signature(message)
+      Signature.new(
         message: message,
-      ).to_str
+        key: @key,
+        algorithm: @algorithm,
+        header_list: @header_list,
+      )
     end
 
   end
