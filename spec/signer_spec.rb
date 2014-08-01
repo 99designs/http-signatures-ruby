@@ -48,11 +48,8 @@ RSpec.describe HttpSignatures::Signer do
     it "passes correct signing string to algorithm" do
       expect(algorithm).to receive(:sign).with(
         "sh",
-        [
-          "date: #{EXAMPLE_DATE}",
-          "content-type: text/plain",
-        ].join("\n")
-      ).and_return("null")
+        ["date: #{EXAMPLE_DATE}", "content-type: text/plain"].join("\n")
+      ).at_least(:once).and_return("null")
       signer.sign(message)
     end
     it "returns reference to the mutated input" do

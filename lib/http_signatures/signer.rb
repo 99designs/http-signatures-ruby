@@ -11,15 +11,14 @@ module HttpSignatures
 
     def sign(message)
       message.tap do |m|
-        signature = signature_parameters_for_message(message).to_str
-        m["Signature"] = [signature]
-        m["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature]
+        m["Signature"] = [signature_parameters(message).to_str]
+        m["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature_parameters(message).to_str]
       end
     end
 
     private
 
-    def signature_parameters_for_message(message)
+    def signature_parameters(message)
       SignatureParameters.new(
         key: @key,
         algorithm: @algorithm,
