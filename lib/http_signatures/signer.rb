@@ -38,13 +38,5 @@ module HttpSignatures
       ).to_str
     end
 
-    class EmptyHeaderNames < StandardError; end
-
-    class MessageMissingHeader < StandardError
-      def initialize(name)
-        super("Message missing header '#{name}'")
-      end
-    end
-
   end
 end
