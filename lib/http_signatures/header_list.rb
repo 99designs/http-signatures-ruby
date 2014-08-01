@@ -17,7 +17,7 @@ module HttpSignatures
       @names.dup
     end
 
-    def to_s
+    def to_str
       @names.join(" ")
     end
 

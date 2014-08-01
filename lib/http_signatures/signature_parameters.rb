@@ -20,7 +20,7 @@ module HttpSignatures
       pc = []
       pc << 'keyId="%s"' % @key.id
       pc << 'algorithm="%s"' % @algorithm.name
-      pc << 'headers="%s"' % @header_list.to_s
+      pc << 'headers="%s"' % @header_list.to_str
       pc << 'signature="%s"' % signature_base64
       pc
     end

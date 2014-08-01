@@ -11,7 +11,7 @@ RSpec.describe HttpSignatures::SignatureParameters do
 
   let(:key) { double("Key", id: "pda") }
   let(:algorithm) { double("Algorithm", name: "hmac-test") }
-  let(:header_list) { double("HeaderList", to_s: "a b c") }
+  let(:header_list) { double("HeaderList", to_str: "a b c") }
   let(:signature) { "sigstring" }
 
   it "builds parameters into string" do
