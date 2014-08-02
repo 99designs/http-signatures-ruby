@@ -9,10 +9,10 @@ RSpec.describe HttpSignatures::SignatureParameters do
     )
   end
 
-  let(:key) { double("Key", id: "pda") }
-  let(:algorithm) { double("Algorithm", name: "hmac-test") }
-  let(:header_list) { double("HeaderList", to_str: "a b c") }
-  let(:signature) { double("Signature", to_str: "sigstring") }
+  let(:key) { instance_double("HttpSignatures::Key", id: "pda") }
+  let(:algorithm) { instance_double("HttpSignatures::Algorithm::Hmac", name: "hmac-test") }
+  let(:header_list) { instance_double("HttpSignatures::HeaderList", to_str: "a b c") }
+  let(:signature) { instance_double("HttpSignatures::Signature", to_str: "sigstring") }
 
   describe "#to_str" do
     it "builds parameters into string" do
