@@ -23,7 +23,7 @@ module HttpSignatures
         key: @key,
         algorithm: @algorithm,
         header_list: @header_list,
-        signature: signature(message).to_str,
+        signature: signature(message),
       )
     end
 

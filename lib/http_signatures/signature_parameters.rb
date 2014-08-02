@@ -26,7 +26,7 @@ module HttpSignatures
     end
 
     def signature_base64
-      Base64.strict_encode64(@signature)
+      Base64.strict_encode64(@signature.to_str)
     end
 
   end

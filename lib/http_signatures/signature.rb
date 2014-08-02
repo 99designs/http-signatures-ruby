@@ -9,7 +9,7 @@ module HttpSignatures
     end
 
     def to_str
-      @algorithm.sign(@key.secret, signing_string)
+      @algorithm.sign(@key.secret, signing_string.to_str)
     end
 
     private
@@ -18,7 +18,7 @@ module HttpSignatures
       SigningString.new(
         header_list: @header_list,
         message: @message,
-      ).to_str
+      )
     end
 
   end
