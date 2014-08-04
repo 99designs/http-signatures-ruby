@@ -10,6 +10,8 @@ See also:
 
 ## Usage
 
+Add [`http_signatures`][gem] to your `Gemfile`.
+
 Configure a context with your algorithm, keys, headers to sign. In Rails,
 this is best placed in an initializer.
 
@@ -73,3 +75,4 @@ Pull Requests are welcome.
 
 
 [draft03]: http://tools.ietf.org/html/draft-cavage-http-signatures-03
+[gem]: http://rubygems.org/gems/http_signatures
