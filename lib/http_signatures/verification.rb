@@ -7,10 +7,18 @@ module HttpSignatures
     end
 
     def valid?
-      expected_signature_base64 == provided_signature_base64
+      signature_header_present? && signature_matches?
     end
 
     private
+
+    def signature_header_present?
+      @message.key?("Signature")
+    end
+
+    def signature_matches?
+      expected_signature_base64 == provided_signature_base64
+    end
 
     def expected_signature_base64
       Base64.strict_encode64(expected_signature_raw)

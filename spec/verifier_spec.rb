@@ -24,6 +24,11 @@ RSpec.describe HttpSignatures::Verifier do
     expect(verifier.valid?(message)).to eq(true)
   end
 
+  it "rejects message with missing headers" do
+    headers.clear
+    expect(verifier.valid?(message)).to eq(false)
+  end
+
   it "rejects message with tampered path" do
     message.path << "x"
     expect(verifier.valid?(message)).to eq(false)
