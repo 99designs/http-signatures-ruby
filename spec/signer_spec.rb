@@ -8,7 +8,7 @@ RSpec.describe HttpSignatures::Signer do
     HttpSignatures::Signer.new(key: key, algorithm: algorithm, header_list: header_list)
   end
   let(:key) { HttpSignatures::Key.new(id: "pda", secret: "sh") }
-  let(:algorithm) { HttpSignatures::Algorithm::Null.new }
+  let(:algorithm) { HttpSignatures::Algorithm::Hmac.new("sha256") }
   let(:header_list) { HttpSignatures::HeaderList.new(["date", "content-type"]) }
 
   let(:message) do
@@ -49,7 +49,7 @@ RSpec.describe HttpSignatures::Signer do
       expect(algorithm).to receive(:sign).with(
         "sh",
         ["date: #{EXAMPLE_DATE}", "content-type: text/plain"].join("\n")
-      ).at_least(:once).and_return("null")
+      ).at_least(:once).and_return("static")
       signer.sign(message)
     end
     it "returns reference to the mutated input" do
@@ -67,14 +67,14 @@ RSpec.describe HttpSignatures::Signer do
     end
     it "matches expected Authorization header" do
       expect(message["Authorization"]).to eq(
-        'Signature keyId="pda",algorithm="null",' +
-          'headers="date content-type",signature="bnVsbA=="'
+        'Signature keyId="pda",algorithm="hmac-sha256",' +
+          'headers="date content-type",signature="0ZoJq6cxYZRXe+TN85whSuQgJsam1tRyIal7ni+RMXA="'
       )
     end
     it "matches expected Signature header" do
       expect(message["Signature"]).to eq(
-        'keyId="pda",algorithm="null",' +
-          'headers="date content-type",signature="bnVsbA=="'
+        'keyId="pda",algorithm="hmac-sha256",' +
+          'headers="date content-type",signature="0ZoJq6cxYZRXe+TN85whSuQgJsam1tRyIal7ni+RMXA="'
       )
     end
   end

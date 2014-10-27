@@ -3,7 +3,6 @@ module HttpSignatures
 
     def self.create(name)
       case name
-      when "null" then Null.new
       when "hmac-sha1" then Hmac.new("sha1")
       when "hmac-sha256" then Hmac.new("sha256")
       else raise UnknownAlgorithm.new(name)
