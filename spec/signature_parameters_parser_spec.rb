@@ -19,6 +19,16 @@ RSpec.describe HttpSignatures::SignatureParametersParser do
         }
       )
     end
+
+    context "with invalid input" do
+      let(:input) do
+        'foo="bar",algorithm="hmac-sha1",headers="(request-target) date",signature="b64"'
+      end
+      it "fails with explanatory error message" do
+        expect { parser.parse }.
+          to raise_error(HttpSignatures::SignatureParametersParser::Error, 'unparseable segment: foo="bar"')
+      end
+    end
   end
 
 end

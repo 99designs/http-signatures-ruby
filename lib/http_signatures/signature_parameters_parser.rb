@@ -21,7 +21,7 @@ module HttpSignatures
 
     def pair(segment)
       match = segment_pattern.match(segment)
-      raise Error if match.nil?
+      raise Error, "unparseable segment: #{segment}" if match.nil?
       match.captures
     end
 
