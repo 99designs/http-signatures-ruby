@@ -44,4 +44,9 @@ RSpec.describe HttpSignatures::Verifier do
     expect(verifier.valid?(message)).to eq(false)
   end
 
+  it "rejects message with malformed signature" do
+    message["Signature"] = "foo=bar,baz=bla,yadda=yadda"
+    expect(verifier.valid?(message)).to eq(false)
+  end
+
 end
