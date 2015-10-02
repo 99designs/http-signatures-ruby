@@ -2,7 +2,7 @@ module HttpSignatures
   class Context
 
     def initialize(keys: {}, signing_key_id: nil, algorithm: nil, headers: nil)
-      @key_store = KeyStore.new(keys)
+      @key_store = keys.is_a?(KeyStore) ? keys : KeyStore.new(keys)
       @signing_key_id = signing_key_id
       @algorithm_name = algorithm
       @headers = headers

@@ -61,4 +61,28 @@ RSpec.describe HttpSignatures::Context do
     end
   end
 
+  context "external KeyStore" do
+    ExternalKeyStore = Class.new(HttpSignatures::KeyStore)
+    subject(:context) do
+      HttpSignatures::Context.new(
+        keys: ExternalKeyStore.new({"hello" => "world", "another" => "key"}),
+        signing_key_id: "another",
+        algorithm: "hmac-sha256",
+        headers: %w{(request-target) date content-length},
+      )
+    end
+
+    describe "@key_store" do
+      it "intantiates with the passed-in KeyStore" do
+        expect(context.instance_variable_get(:@key_store)).to be_a(ExternalKeyStore)
+      end
+    end
+
+    describe "#signer" do
+      it "signs without errors" do
+        context.signer.sign(message)
+      end
+    end
+  end
+
 end
