@@ -17,7 +17,10 @@ module HttpSignatures
     end
 
     def signature_matches?
-      expected_signature_base64 == provided_signature_base64
+      ::HttpSignatures::StringComparer.new.equal?(
+        expected_signature_base64,
+        provided_signature_base64,
+      )
     rescue SignatureParametersParser::Error
       false
     end
