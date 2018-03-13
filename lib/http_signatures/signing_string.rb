@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class SigningString
-
-    REQUEST_TARGET = "(request-target)"
+    REQUEST_TARGET = '(request-target)'
 
     def initialize(header_list:, message:)
       @header_list = header_list
@@ -10,7 +11,7 @@ module HttpSignatures
 
     def to_str
       @header_list.to_a.map do |header|
-        "%s: %s" % [header, header_value(header)]
+        "#{header}: #{header_value(header)}"
       end.join("\n")
     end
 
@@ -23,9 +24,8 @@ module HttpSignatures
     end
 
     def request_target
-      "%s %s" % [@message.method.downcase, @message.path]
+      "#{@message.method.downcase} #{@message.path}"
     end
-
   end
 
   class HeaderNotInMessage < StandardError
@@ -33,5 +33,4 @@ module HttpSignatures
       super("Header '#{name}' not in message")
     end
   end
-
 end

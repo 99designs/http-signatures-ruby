@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class Signature
-
     def initialize(message:, key:, algorithm:, header_list:)
       @message = message
       @key = key
@@ -17,9 +18,8 @@ module HttpSignatures
     def signing_string
       SigningString.new(
         header_list: @header_list,
-        message: @message,
+        message: @message
       )
     end
-
   end
 end

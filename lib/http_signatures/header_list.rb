@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class HeaderList
-
-    # cannot sign the signature headers
-    ILLEGAL = ["authorization", "signature"]
+    # Cannot sign the signature headers
+    ILLEGAL = %w[authorization signature].freeze
 
     def self.from_string(string)
-      new(string.split(" "))
+      new(string.split(' '))
     end
 
     def initialize(names)
@@ -18,18 +19,14 @@ module HttpSignatures
     end
 
     def to_str
-      @names.join(" ")
+      @names.join(' ')
     end
 
     private
 
     def validate_names!
-      if @names.empty?
-        raise EmptyHeaderList
-      end
-      if illegal_headers_present.any?
-        raise IllegalHeader, illegal_headers_present
-      end
+      raise EmptyHeaderList if @names.empty?
+      raise IllegalHeader, illegal_headers_present if illegal_headers_present.any?
     end
 
     def illegal_headers_present
@@ -38,12 +35,11 @@ module HttpSignatures
 
     class IllegalHeader < StandardError
       def initialize(names)
-        names_string = names.map { |n| "'#{n}'" }.join(", ")
+        names_string = names.map { |n| "'#{n}'" }.join(', ')
         super("Header #{names_string} not permitted")
       end
     end
 
     class EmptyHeaderList < StandardError; end
-
   end
 end

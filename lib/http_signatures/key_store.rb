@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class KeyStore
-
     def initialize(key_hash)
       @keys = {}
       key_hash.each { |id, secret| self[id] = secret }
@@ -11,11 +12,8 @@ module HttpSignatures
     end
 
     def only_key
-      if @keys.one?
-        @keys.values.first
-      else
-        raise KeyError, "Expected 1 key, found #{@keys.size}"
-      end
+      return @keys.values.first if @keys.one?
+      raise KeyError, "Expected 1 key, found #{@keys.size}"
     end
 
     private
@@ -23,6 +21,5 @@ module HttpSignatures
     def []=(id, secret)
       @keys[id] = Key.new(id: id, secret: secret)
     end
-
   end
 end

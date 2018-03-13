@@ -1,0 +1,17 @@
+AllCops:
+  DisplayCopNames: true
+  TargetRubyVersion: 2.3
+
+Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Style/ExpandPathArguments:
+  Exclude:
+    - http_signatures.gemspec
+
+Metrics/LineLength:
+  Max: 110

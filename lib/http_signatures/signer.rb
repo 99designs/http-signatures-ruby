@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class Signer
-
-    AUTHORIZATION_SCHEME = "Signature"
+    AUTHORIZATION_SCHEME = 'Signature'
 
     def initialize(key:, algorithm:, header_list:)
       @key = key
@@ -11,8 +12,8 @@ module HttpSignatures
 
     def sign(message)
       message.tap do |m|
-        m["Signature"] = [signature_parameters(message).to_str]
-        m["Authorization"] = [AUTHORIZATION_SCHEME + " " + signature_parameters(message).to_str]
+        m['Signature'] = [signature_parameters(message).to_str]
+        m['Authorization'] = [AUTHORIZATION_SCHEME + ' ' + signature_parameters(message).to_str]
       end
     end
 
@@ -23,7 +24,7 @@ module HttpSignatures
         key: @key,
         algorithm: @algorithm,
         header_list: @header_list,
-        signature: signature(message),
+        signature: signature(message)
       )
     end
 
@@ -32,9 +33,8 @@ module HttpSignatures
         message: message,
         key: @key,
         algorithm: @algorithm,
-        header_list: @header_list,
+        header_list: @header_list
       )
     end
-
   end
 end
