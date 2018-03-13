@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class Context
-
     def initialize(keys: {}, signing_key_id: nil, algorithm: nil, headers: nil)
       @key_store = KeyStore.new(keys)
       @signing_key_id = signing_key_id
@@ -12,7 +13,7 @@ module HttpSignatures
       Signer.new(
         key: signing_key,
         algorithm: Algorithm.create(@algorithm_name),
-        header_list: HeaderList.new(@headers),
+        header_list: HeaderList.new(@headers)
       )
     end
 
@@ -29,6 +30,5 @@ module HttpSignatures
         @key_store.only_key
       end
     end
-
   end
 end

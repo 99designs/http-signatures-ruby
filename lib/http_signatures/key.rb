@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module HttpSignatures
   class Key
-
     def initialize(id:, secret:)
       @id = id
       @secret = secret
@@ -11,9 +12,8 @@ module HttpSignatures
 
     def ==(other)
       self.class == other.class &&
-        self.id == other.id &&
-        self.secret == other.secret
+        id == other.id &&
+        secret == other.secret
     end
-
   end
 end
