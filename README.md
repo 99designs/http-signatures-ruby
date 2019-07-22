@@ -28,6 +28,9 @@ $context = HttpSignatures::Context.new(
 If there's only one key in the `keys` hash, that will be used for signing.
 Otherwise, specify one via `signing_key_id: "examplekey"`.
 
+`keys` may be an instance of `HttpSignature::KeyStore` or other object
+that conforms to its API.
+
 ### Messages
 
 A message is an HTTP request or response. A subset of the interface of
