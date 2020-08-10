@@ -41,7 +41,7 @@ require "time"
 
 message = Net::HTTP::Get.new(
   "/path?query=123",
-  "Date" => Time.now.rfc822,
+  "Date" => Time.now.httpdate,
   "Content-Length" => "0",
 )
 ```
