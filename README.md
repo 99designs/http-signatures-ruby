@@ -68,6 +68,20 @@ message["Authorization"]
 $context.verifier.valid?(message)  # => true or false
 ```
 
+### Usage with Faraday
+
+This gem includes an adapter for Faraday:
+
+```rb
+require 'http_signatures/extensions/faraday'
+
+conn = Faraday.new do |f|
+  # Accepts all the options of HttpSignatures::Context
+  f.request :signature, keys: {"examplekey" => "secret-key-here"}, algorithm: "hmac-sha256"
+end
+
+conn.post("http://httpbingo.org/post") # will automatically add "Signature" header
+```
 
 ## Contributing
 
